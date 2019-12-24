@@ -26033,5 +26033,7 @@ in
 
   go-license-detector = callPackage ../development/tools/misc/go-license-detector { };
 
-  flutter = callPackage ../development/compilers/flutter { };
+  flutterPackages =
+    recurseIntoAttrs (callPackage ../development/compilers/flutter { });
+  flutter = flutterPackages.stable;
 }
