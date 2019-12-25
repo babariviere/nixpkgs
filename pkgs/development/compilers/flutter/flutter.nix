@@ -43,6 +43,7 @@ let
       echo "$revision" > "$STAMP_PATH"
       echo "${version}" >> version
 
+      rm -rf bin/cache/{artifacts,downloads}
       rm -f  bin/cache/*.stamp
       rm -rf .pub-cache
     '';
