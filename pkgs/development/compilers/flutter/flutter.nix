@@ -71,7 +71,7 @@ let
 in runCommand drvName {
   startScript = ''
     #!${bash}/bin/bash
-    export PUB_CACHE=''${PUB_CACHE-"$HOME/.pub-cache"}
+    export PUB_CACHE=''${PUB_CACHE:-"$HOME/.pub-cache"}
     ${fhsEnv}/bin/${drvName}-fhs-env ${flutter}/bin/flutter --no-version-check "$@"
   '';
   preferLocalBuild = true;
