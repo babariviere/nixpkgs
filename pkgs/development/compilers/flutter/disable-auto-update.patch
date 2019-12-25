@@ -64,7 +64,7 @@ index e6216c737..5ab497092 100644
          entryUri: entryUri,
        ));
 diff --git a/packages/flutter_tools/lib/src/cache.dart b/packages/flutter_tools/lib/src/cache.dart
-index 5e1950b56..92441c1b1 100644
+index 5e1950b56..e2779df56 100644
 --- a/packages/flutter_tools/lib/src/cache.dart
 +++ b/packages/flutter_tools/lib/src/cache.dart
 @@ -165,7 +165,7 @@ class Cache {
@@ -72,7 +72,7 @@ index 5e1950b56..92441c1b1 100644
      assert(_lock == null);
      final File lockFile =
 -        fs.file(fs.path.join(flutterRoot, 'bin', 'cache', 'lockfile'));
-+        fs.file(fs.path.join(homeDirPath, '.cache', 'lockfile'));
++        fs.file(fs.path.join(homeDirPath, '.cache', 'flutter', 'lockfile'));
      try {
        _lock = lockFile.openSync(mode: FileMode.write);
      } on FileSystemException catch (e) {
