@@ -24,8 +24,6 @@ let
     '';
 
     buildPhase = ''
-      HOME="$PWD"
-
       FLUTTER_ROOT=$(pwd)
       FLUTTER_TOOLS_DIR="$FLUTTER_ROOT/packages/flutter_tools"
       SNAPSHOT_PATH="$FLUTTER_ROOT/bin/cache/flutter_tools.snapshot"
@@ -36,28 +34,22 @@ let
       DART="$DART_SDK_PATH/bin/dart"
       PUB="$DART_SDK_PATH/bin/pub"
 
-      (cd $FLUTTER_TOOLS_DIR && $PUB upgrade --offline)
+      HOME=$PWD # required for pub upgrade --offline, ~/.pub-cache
+
+      (cd "$FLUTTER_TOOLS_DIR" && "$PUB" upgrade --offline)
 
       local revision="$(cd "$FLUTTER_ROOT"; git rev-parse HEAD)"
       "$DART" --snapshot="$SNAPSHOT_PATH" --packages="$FLUTTER_TOOLS_DIR/.packages" "$SCRIPT_PATH"
       echo "$revision" > "$STAMP_PATH"
-
-      mkdir -p $PWD/.cache
-      ./bin/flutter --version # required to avoid launch error
-      rm -rf $PWD/.cache
-      rm .flutter
-      rm .flutter_tool_state
-
       echo "${version}" >> version
-      rm -rf ./.pub-cache
+
+      rm -f  bin/cache/*.stamp
+      rm -rf .pub-cache
     '';
 
     installPhase = ''
       mkdir -p $out
       cp -r . $out
-
-      wrapProgram $out/bin/flutter --set-default PUB_CACHE '$HOME/.cache/pub' \
-                                   --add-flags "--no-version-check"
     '';
   };
 
@@ -78,7 +70,8 @@ let
 in runCommand drvName {
   startScript = ''
     #!${bash}/bin/bash
-    ${fhsEnv}/bin/${drvName}-fhs-env ${flutter}/bin/flutter "$@"
+    export PUB_CACHE=''${PUB_CACHE-"$HOME/.pub-cache"}
+    ${fhsEnv}/bin/${drvName}-fhs-env ${flutter}/bin/flutter --no-version-check "$@"
   '';
   preferLocalBuild = true;
   allowSubstitutes = false;

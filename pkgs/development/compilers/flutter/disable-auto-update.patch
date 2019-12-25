@@ -30,7 +30,7 @@ index 3955f8f39..219105c1d 100755
  # separate space-separated args.
  "$DART" --packages="$FLUTTER_TOOLS_DIR/.packages" $FLUTTER_TOOL_ARGS "$SNAPSHOT_PATH" "$@"
 diff --git a/packages/flutter_tools/lib/src/cache.dart b/packages/flutter_tools/lib/src/cache.dart
-index 5e1950b56..a0eb0a829 100644
+index 5e1950b56..92441c1b1 100644
 --- a/packages/flutter_tools/lib/src/cache.dart
 +++ b/packages/flutter_tools/lib/src/cache.dart
 @@ -165,7 +165,7 @@ class Cache {
@@ -42,36 +42,12 @@ index 5e1950b56..a0eb0a829 100644
      try {
        _lock = lockFile.openSync(mode: FileMode.write);
      } on FileSystemException catch (e) {
-@@ -356,19 +356,19 @@ class Cache {
-       if (artifact.isUpToDate()) {
-         continue;
-       }
--      try {
--        await artifact.update();
--      } on SocketException catch (e) {
--        if (_hostsBlockedInChina.contains(e.address?.host)) {
--          printError(
--            'Failed to retrieve Flutter tool dependencies: ${e.message}.\n'
--            'If you\'re in China, please see this page: '
--            'https://flutter.dev/community/china',
--            emphasis: true,
--          );
--        }
--        rethrow;
--      }
-+      // try {
-+      //   await artifact.update();
-+      // } on SocketException catch (e) {
-+      //   if (_hostsBlockedInChina.contains(e.address?.host)) {
-+      //     printError(
-+      //       'Failed to retrieve Flutter tool dependencies: ${e.message}.\n'
-+      //       'If you\'re in China, please see this page: '
-+      //       'https://flutter.dev/community/china',
-+      //       emphasis: true,
-+      //     );
-+      //   }
-+      //   rethrow;
-+      // }
+@@ -239,7 +239,7 @@ class Cache {
+     if (_rootOverride != null) {
+       return fs.directory(fs.path.join(_rootOverride.path, 'bin', 'cache'));
+     } else {
+-      return fs.directory(fs.path.join(flutterRoot, 'bin', 'cache'));
++      return fs.directory(fs.path.join(homeDirPath, '.cache', 'flutter'));
      }
    }
  
