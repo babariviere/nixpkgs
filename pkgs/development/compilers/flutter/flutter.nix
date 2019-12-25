@@ -16,7 +16,8 @@ let
 
     buildInputs = [ makeWrapper git ];
 
-    patches = [ ./disable-auto-update.patch ];
+    patches =
+      [ ./patches/disable-auto-update.patch ./patches/move-cache.patch ];
 
     postPatch = ''
       patchShebangs --build ./bin/
