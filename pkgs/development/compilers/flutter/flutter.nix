@@ -34,7 +34,8 @@ let
       DART="$DART_SDK_PATH/bin/dart"
       PUB="$DART_SDK_PATH/bin/pub"
 
-      HOME=$PWD # required for pub upgrade --offline, ~/.pub-cache
+      HOME=../.. # required for pub upgrade --offline, ~/.pub-cache
+                 # path is relative otherwise it's replaced by /build/flutter
 
       (cd "$FLUTTER_TOOLS_DIR" && "$PUB" upgrade --offline)
 
@@ -45,7 +46,6 @@ let
 
       rm -rf bin/cache/{artifacts,downloads}
       rm -f  bin/cache/*.stamp
-      rm -rf .pub-cache
     '';
 
     installPhase = ''
