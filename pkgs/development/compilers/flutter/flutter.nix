@@ -59,14 +59,14 @@ let
   # like adb from $ANDROID_HOME or java from android-studio.
   fhsEnv = buildFHSUserEnv {
     name = "${drvName}-fhs-env";
-    multiPkgs = pkgs:
-      [
-        # Flutter only use these certificates
-        (runCommand "fedoracert" { } ''
-          mkdir -p $out/etc/pki/tls/
-          ln -s ${cacert}/etc/ssl/certs $out/etc/pki/tls/certs
-        '')
-      ];
+    multiPkgs = pkgs: [
+      # Flutter only use these certificates
+      (runCommand "fedoracert" { } ''
+        mkdir -p $out/etc/pki/tls/
+        ln -s ${cacert}/etc/ssl/certs $out/etc/pki/tls/certs
+      '')
+      pkgs.zlib
+    ];
   };
 
 in runCommand drvName {
