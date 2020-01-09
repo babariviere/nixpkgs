@@ -67,6 +67,18 @@ let
       '')
       pkgs.zlib
     ];
+    targetPkgs = pkgs:
+      with pkgs; [
+        bash
+        curl
+        git
+        unzip
+        which
+        xz
+
+        # flutter test requires this lib
+        libGLU
+      ];
   };
 
 in runCommand drvName {
