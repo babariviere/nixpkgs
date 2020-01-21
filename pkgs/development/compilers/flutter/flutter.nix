@@ -43,7 +43,7 @@ let
       local revision="$(cd "$FLUTTER_ROOT"; git rev-parse HEAD)"
       "$DART" --snapshot="$SNAPSHOT_PATH" --packages="$FLUTTER_TOOLS_DIR/.packages" "$SCRIPT_PATH"
       echo "$revision" > "$STAMP_PATH"
-      echo "${version}" >> version
+      echo -n "${version}" > version
 
       rm -rf bin/cache/{artifacts,downloads}
       rm -f  bin/cache/*.stamp
