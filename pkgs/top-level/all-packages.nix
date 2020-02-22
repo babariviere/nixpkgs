@@ -7985,6 +7985,10 @@ in
   };
   fasm-bin = callPackage ../development/compilers/fasm/bin.nix { };
 
+  flutterPackages =
+    recurseIntoAttrs (callPackage ../development/compilers/flutter { });
+  flutter = flutterPackages.stable;
+
   fpc = callPackage ../development/compilers/fpc { };
 
   gambit = callPackage ../development/compilers/gambit { stdenv = gccStdenv; };
@@ -26032,8 +26036,4 @@ in
   quartus-prime-lite = callPackage ../applications/editors/quartus-prime {};
 
   go-license-detector = callPackage ../development/tools/misc/go-license-detector { };
-
-  flutterPackages =
-    recurseIntoAttrs (callPackage ../development/compilers/flutter { });
-  flutter = flutterPackages.stable;
 }

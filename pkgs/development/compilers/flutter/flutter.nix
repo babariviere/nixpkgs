@@ -1,7 +1,8 @@
-{ channel, pname, version, sha256Hash }:
+{ channel, pname, version, sha256Hash, patches }:
 
 { bash, buildFHSUserEnv, cacert, coreutils, git, makeWrapper, runCommand, stdenv
-, fetchurl }:
+, fetchurl, alsaLib, dbus, expat, libpulseaudio, libuuid, libX11, libxcb
+, libXcomposite, libXcursor, libXdamage, libXfixes, libGL, nspr, nss, systemd }:
 
 let
   drvName = "flutter-${channel}-${version}";
@@ -16,8 +17,7 @@ let
 
     buildInputs = [ makeWrapper git ];
 
-    patches =
-      [ ./patches/disable-auto-update.patch ./patches/move-cache.patch ];
+    inherit patches;
 
     postPatch = ''
       patchShebangs --build ./bin/
@@ -78,6 +78,23 @@ let
 
         # flutter test requires this lib
         libGLU
+
+        # for android emulator
+        alsaLib
+        dbus
+        expat
+        libpulseaudio
+        libuuid
+        libX11
+        libxcb
+        libXcomposite
+        libXcursor
+        libXdamage
+        libXfixes
+        libGL
+        nspr
+        nss
+        systemd
       ];
   };
 
@@ -85,6 +102,7 @@ in runCommand drvName {
   startScript = ''
     #!${bash}/bin/bash
     export PUB_CACHE=''${PUB_CACHE:-"$HOME/.pub-cache"}
+    export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
     ${fhsEnv}/bin/${drvName}-fhs-env ${flutter}/bin/flutter --no-version-check "$@"
   '';
   preferLocalBuild = true;
